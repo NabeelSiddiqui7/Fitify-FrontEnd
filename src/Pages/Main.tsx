@@ -51,7 +51,7 @@ export default function Main() {
             <div className="py-6 px-20 flex">
                 <h1 className="font-bold text-4xl">Hello {username}!</h1>
             </div>
-           <DailyChecklist activities={dailyActivities}/>
+           <DailyChecklist activities={dailyActivities} refresh={getResult}/>
             <div className="flex-col h-[60vh] py-6 px-20">
                 <div className="flex h-full justify-between">
                     <div className="w-1/3 flex flex-col text-center bg-white justify-between items-center m-2 rounded-2xl drop-shadow-lg">

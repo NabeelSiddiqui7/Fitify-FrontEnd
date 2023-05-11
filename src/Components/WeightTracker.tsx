@@ -42,7 +42,6 @@ export default function WeightTracker(props:any){
         <div>
             <LineChart width={730} height={250} data={data}
               margin={{ top: 5, right: 30, left: 20, bottom: 5 }}>
-              <CartesianGrid strokeDasharray="3 3" />
               <XAxis dataKey="record_date" tickFormatter={formatXAxis} padding={{ left: 10, right: 10 }}/>
               <YAxis domain={['dataMin - 5', 'dataMax']} />
               <Tooltip />
