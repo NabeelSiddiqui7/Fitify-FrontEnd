@@ -8,27 +8,40 @@ import { useState, Fragment } from 'react';
 export default function DailyChecklist(props:any){
     const [isOpen, setIsOpen] = useState(false);
     const [activityName, setActivityName] = useState("");
+    const [activityCategory, setActivityCategory] = useState("Workout");
+    const [activityDescription, setActivityDescription] = useState("");
     var completedCount = props.activities.reduce(function(count:any, activity:any) {
         return count + (activity.completed === true);
     }, 0);
 
-    console.log(props.activities);
+    const categoryColours = function (category:any, background:boolean) {
+        switch(category){
+            case 'Workout': 
+                return background? 'bg-indigo-100':'text-indigo-600';
+            case 'Cardio': 
+                return background? 'bg-pink-100':'text-orange-600';
+            case 'Yoga': 
+                return background? 'bg-green-100':'text-green-600';
+            case 'Meditation': 
+                return background? 'bg-sky-100':'text-sky-600';
+        }
+    }
 
     const addTask = async () => {
         const url = `${process.env.REACT_APP_API_BASE_URL}/activities`;
-        await axios.get(url, {params: {description: activityName}});
+        await axios.get(url, {params: {name: activityName, category: activityCategory, description: activityDescription}});
         props.refresh();
     }
 
-    const updateTask = async (description: any, completed:any) => {
+    const updateTask = async (name: any, completed:any) => {
         const url = `${process.env.REACT_APP_API_BASE_URL}/activities/update`;
-        await axios.get(url, {params: {description: description, completed:completed.toString()}});
+        await axios.get(url, {params: {name: name, completed:completed.toString()}});
         props.refresh();
     }
 
-    const deleteTask = async (description: any) => {
+    const deleteTask = async (id: any) => {
         const url = `${process.env.REACT_APP_API_BASE_URL}/activities/delete`;
-        await axios.get(url, {params: {description: description}});
+        await axios.get(url, {params: {activity_id: id}});
         props.refresh();
     }
     
@@ -41,22 +54,26 @@ export default function DailyChecklist(props:any){
                         return (
                             <button 
                                 onClick={()=>{
-                                    updateTask(activity.description, Boolean(!activity.completed));
+                                    updateTask(activity.name, Boolean(!activity.completed));
                                 }}
-                                className="flex flex-col h-full text-center w-[20vh] bg-white px-1 py-2 rounded-lg drop-shadow-lg items-center"
+                                className="flex flex-col h-full w-[24vh] bg-slate-900 px-1 py-1 rounded-lg drop-shadow-lg"
                             >
                                 <div className='flex justify-between w-full px-1'>
                                     <button onClick={(e)=>{
                                         e.stopPropagation();
-                                        deleteTask(activity.description);
+                                        deleteTask(activity.activity_id);
                                     }}>
-                                        <DeleteIcon className='text-red-600' sx={{fontSize: '1rem'}}></DeleteIcon>
+                                        <DeleteIcon className='text-red-400' sx={{fontSize: '1rem'}}></DeleteIcon>
                                     </button>
-                                    <div className={`w-5 h-5 text-base self-end ${activity.completed? 'bg-green-400' : 'bg-red-400'} rounded-full flex justify-between items-center`}>
-                                        {activity.completed && <CheckIcon sx={{fontSize:'1rem', margin:'auto'}}/>}
+                                    <h2 className={'mt-2 text-sm font-semibold py-1 px-2 rounded-lg ' + categoryColours(activity.category, true) 
+                                        + ' ' + categoryColours(activity.category, false)}>{activity.category}
+                                    </h2>
+                                    <div className={`w-4 h-4 my-auto text-white self-end ${activity.completed? 'bg-green-400' : 'bg-red-400'} rounded-full flex justify-between items-center`}>
+                                        {activity.completed && <CheckIcon sx={{fontSize:'0.75rem', margin:'auto'}}/>}
                                     </div>
                                 </div>
-                                <h2 className='mx-auto mt-4 font-semibold'>{activity.description}</h2>
+                                <h2 className='mt-4 ml-2 font-semibold'>{activity.name}</h2>
+                                <p className='ml-2 text-sm text-gray-500'>{activity.description}</p>
                             </button>
                         )
                     })}
@@ -69,7 +86,14 @@ export default function DailyChecklist(props:any){
                 show={isOpen}
                 as={Fragment}
             >
-                <Dialog onClose={() => setIsOpen(false)}>
+                <Dialog onClose={() => {
+                            setIsOpen(false);
+                            setActivityName("");
+                            setActivityCategory("Workout");
+                            setActivityDescription("");
+                        }
+                    }
+                >
                     <Transition.Child
                         as={Fragment}
                         enter="ease-out duration-300"
@@ -90,33 +114,65 @@ export default function DailyChecklist(props:any){
                         leaveFrom="opacity-100 scale-100"
                         leaveTo="opacity-0 scale-95"
                     >
-                        <div className='fixed inset-0 bg-white w-[50vh] h-[50vh] m-auto p-2 text-center rounded-xl drop-shadow-xl'>
+                        <div className='fixed inset-0 bg-white w-[50vh] h-[60vh] m-auto p-2 rounded-xl drop-shadow-xl'>
                             <Dialog.Panel className='h-full flex p-4'>
                                 <div className='flex flex-col grow'>
-                                    <Dialog.Title className='font-bold'>New Activity</Dialog.Title>
+                                    <Dialog.Title className='font-bold my-2 ml-4'>New Activity</Dialog.Title>
                                     <form className='flex flex-col'>
-                                        <label>
+                                        <label className='ml-4'>
                                             Activity Name:
                                         </label>
                                         <input 
                                             type="text" 
+                                            required
                                             name="activity-name" 
                                             className='m-4 border-2 border-slate-600 rounded-md' 
                                             onChange={(e)=>setActivityName(e.target.value)}
+                                        />
+                                        <label className='ml-4'>
+                                            Category:
+                                        </label>
+                                        <select 
+                                            name="activity-category" 
+                                            id="activity-category" 
+                                            className='m-4 border-2 border-slate-600 rounded-md'
+                                            defaultValue={"Workout"}
+                                            onChange={(e)=>{setActivityCategory(e.target.value); console.log(e.target.value)}}
+                                        >
+                                            <option value="Workout">Workout</option>
+                                            <option value="Cardio">Cardio</option>
+                                            <option value="Yoga">Yoga</option>
+                                            <option value="Meditation">Meditation</option>
+                                        </select>
+                                        <label className='ml-4'>
+                                            Description (optional):
+                                        </label>
+                                        <textarea id="activity-desc" name="activity-desc" 
+                                            maxLength={20} style={{resize:'none'}} 
+                                            className='m-4 border-2 border-slate-600 rounded-md'
+                                            onChange={(e)=>setActivityDescription(e.target.value)}
                                         />
                                     </form>
 
                                     <div className='flex w-full justify-between p-4 mt-auto'>
                                         <button 
-                                            onClick={() => setIsOpen(false)}
-                                            className='bg-white hover:bg-gray-100 text-gray-800 font-semibold py-2 px-4 border border-gray-400 rounded shadow'
+                                            onClick={() => {
+                                                setIsOpen(false);
+                                                setActivityName("");
+                                                setActivityCategory("Workout");
+                                                setActivityDescription("");
+                                            }}
+                                            className='bg-red-300 hover:bg-red-200 text-gray-800 font-semibold py-2 px-4 rounded shadow'
                                         >Cancel</button>
                                         <button 
                                             onClick={() => {
                                                 addTask();
                                                 setIsOpen(false);
+                                                setActivityName("");
+                                                setActivityCategory("Workout");
+                                                setActivityDescription("");
                                             }}
-                                            className='bg-white hover:bg-gray-100 text-gray-800 font-semibold py-2 px-4 border border-gray-400 rounded shadow'
+                                            className='bg-green-300 hover:bg-green-200 text-gray-800 font-semibold py-2 px-4 rounded shadow'
                                         >Add</button>                            
                                     </div>
                                 </div>

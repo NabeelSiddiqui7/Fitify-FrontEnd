@@ -33,6 +33,11 @@
   
 }
 
+.rbh {
+  width: 80%;
+  margin: auto;
+}
+
 @keyframes App-logo-spin {
   from {
     transform: rotate(0deg);
