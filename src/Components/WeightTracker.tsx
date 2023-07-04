@@ -19,8 +19,6 @@ export default function WeightTracker(props:any){
     const [weight, setWeight] = useState(0);
     const [weightAdded, setWeightAdded] = useState(false);
 
-    console.log(data);
-
     let iconStyles = {
       fontSize: '1rem',
       margin: 'auto',

@@ -1,22 +1,21 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext } from "react";
+import { Navigate, useNavigate } from 'react-router-dom';
 import Header from "../Components/Header";
 import CalorieTracker from "../Components/CalorieTracker";
 import WeeklySummary from "../Components/WeeklySummary";
 import DailyChecklist from "../Components/DailyChecklist";
-import AddCircleOutlineIcon from '@mui/icons-material/AddCircleOutline';
 import WeightTracker from "../Components/WeightTracker";
 import { Link } from "react-router-dom";
 import { Transition } from '@headlessui/react'
 import MuscleGroups from "../Components/MuscleGroups";
 import axios from "axios";
-import ToggleIcon from "material-ui-toggle-icon";
-import CheckIcon from '@mui/icons-material/Check';
-import IconButton from "@material-ui/core/IconButton";
+import { UserContext } from "../App";
 
 
 
-export default function Main() {
-    const [username, setUserName] = useState('');
+export default function Main(props:any) {
+    const [userData, setUserData] = useState<any>({});
+    // const [user, setUser] = useState({});
     const [weight, setWeight] = useState([]);
     const [openAdd, setOpenAdd] = useState(false);
     const [results, setResults] = useState<any[]>(["empty"]);
@@ -25,13 +24,19 @@ export default function Main() {
     const [dailyFood, setDailyFood] = useState([]);
     const [dailyNutrition, setdailyNutrition] = useState([] as any[]);
     const [dailyWorkout, setDailyWorkout] = useState([] as any[]);
+    const [user, setUser] = useContext(UserContext);
+    const navigate = useNavigate();
 
     const getResult = async () => {
         const url = `${process.env.REACT_APP_API_BASE_URL}`;
-        const res = await axios.get(url);
+        const res = await axios.get(url, {
+            params:{
+                id: user.id
+            }
+        });
         const data = res.data;
+        console.log(data);
         setResults(data);
-        setUserName(data.UserData[0].username);
         setWeight(data.WeightData);
         setDailyActivities(data.DailyActivities);
         setWeeklySummary(data.WeeklySummary);
@@ -50,22 +55,44 @@ export default function Main() {
             normal_data[2].amt += food.fat_g;
           })
         setdailyNutrition(normal_data);
-        console.log(data);
-
     }
     
     useEffect(()=>{
+        const checkRefreshToken = async ()=>{
+            const url = `${process.env.REACT_APP_API_BASE_URL}/refresh_token`;
+            const res = await axios.post(url, null, {
+                withCredentials: true,
+            }).then((res)=>{
+              const data = res.data;
+              console.log(data);
+              setUser({accesstoken: data.accesstoken, id: data.id, email: data.email, username: data.username});
+              if(!data.accesstoken){
+                navigate("/login")
+            }
+            });
+        };
+        checkRefreshToken();
+    }, []);
+
+    useEffect(()=>{
         if(results[0] == "empty"){
             getResult();
-        }
-    });
+        };
+    },[user])
+
       
   return (
     <div className="flex h-fit">
         <Header/>
         <div className="bg-slate-800 h-fit grow text-white">
-            <div className="py-6 px-20 flex">
-                <h1 className="font-bold text-4xl">Hello {username}!</h1>
+            <div className="py-6 px-20 flex justify-between">
+                <h1 className="font-bold text-4xl">Hello {user.username}!</h1>
+                <div>
+                    <Link to={'/login'}>
+                        <button className="bg-transparent hover:bg-green-500 text-white font-semibold hover:text-white py-2 px-4 border border-green-500 hover:border-transparent rounded"
+                        onClick={()=>props.logoutCallback()}>Logout</button>
+                    </Link>
+                </div>
             </div>
            <DailyChecklist activities={dailyActivities} refresh={getResult}/>
             <div className="flex-col h-[52vh] py-2 px-20">

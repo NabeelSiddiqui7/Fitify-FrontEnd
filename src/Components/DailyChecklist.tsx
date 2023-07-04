@@ -137,7 +137,7 @@ export default function DailyChecklist(props:any){
                                             id="activity-category" 
                                             className='m-4 border-2 border-slate-600 rounded-md'
                                             defaultValue={"Workout"}
-                                            onChange={(e)=>{setActivityCategory(e.target.value); console.log(e.target.value)}}
+                                            onChange={(e)=>{setActivityCategory(e.target.value)}}
                                         >
                                             <option value="Workout">Workout</option>
                                             <option value="Cardio">Cardio</option>
