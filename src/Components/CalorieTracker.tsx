@@ -190,13 +190,6 @@ export default function CalorieTracker(props: any) {
                       onClick={() => setIsOpen(false)}
                       className='bg-white hover:bg-gray-100 text-gray-800 font-semibold py-2 px-4 border border-gray-400 rounded shadow'
                     >Cancel</button>
-                    <button
-                      onClick={() => {
-                        // addWeight(new Date)
-                        setIsOpen(false);
-                      }}
-                      className='bg-white hover:bg-gray-100 text-gray-800 font-semibold py-2 px-4 border border-gray-400 rounded shadow'
-                    >Add</button>
                   </div>
                 </div>
               </Dialog.Panel>

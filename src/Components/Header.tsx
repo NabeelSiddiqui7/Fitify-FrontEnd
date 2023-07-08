@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { Link } from "react-router-dom";
+import LockIcon from '@mui/icons-material/Lock';
 
 export default function Header() {
     return (
@@ -11,24 +12,30 @@ export default function Header() {
                 >
                     <p>Home</p>
                 </Link>
-                <Link
-                    to={'/'}
-                    className={`py-4 w-full text-center hover-link`}
+                <div
+                    className={`py-4 w-full text-center bg-black bg-opacity-40`}
                 >
-                    <p>Workouts</p>
-                </Link>
-                <Link
-                    to={'/'}
-                    className={`py-4 w-full text-center hover-link`}
+                    <div className="flex justify-center">
+                        <p>Workouts</p>
+                        <LockIcon />
+                    </div>
+                </div>
+                <div
+                    className={`py-4 w-full text-center bg-black bg-opacity-40`}
                 >
-                    <p>Meals</p>
-                </Link>
-                <Link
-                    to={'/'}
-                    className={`py-4 w-full text-center hover-link`}
+                    <div className="flex justify-center">
+                        <p>Meals</p>
+                        <LockIcon />
+                    </div>
+                </div>
+                <div
+                    className={`py-4 w-full text-center bg-black bg-opacity-40`}
                 >
-                    <p>Videos</p>
-                </Link>
+                    <div className="flex justify-center">
+                        <p>Videos</p>
+                        <LockIcon />
+                    </div>
+                </div>
             </header>
         </div>
     )
