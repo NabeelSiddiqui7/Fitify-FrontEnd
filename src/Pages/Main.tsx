@@ -80,15 +80,15 @@ export default function Main(props: any) {
         });
     }, [user])
 
-    if (isLoading) {
-        return (
-            <div className="h-screen max-w-screen">
-                <div className="flex bg-slate-800 h-full grow text-white">
-                    <h2 className="m-auto">Loading</h2>
-                </div>
-            </div>
-        )
-    }
+    // if (isLoading) {
+    //     return (
+    //         <div className="h-screen max-w-screen">
+    //             <div className="flex bg-slate-800 h-full grow text-white">
+    //                 <h2 className="m-auto">Loading</h2>
+    //             </div>
+    //         </div>
+    //     )
+    // }
     return (
         <div className="lg:flex h-fit max-w-screen">
             <Header />
