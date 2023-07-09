@@ -30,8 +30,6 @@ function App() {
       }).then((resp) => {
         const data = resp.data;
         const token = data.accesstoken;
-        const newUser = { accesstoken: data.accesstoken, id: data.id, email: data.email, username: data.username };
-        setUser(newUser);
       });
     };
     checkRefreshToken();
