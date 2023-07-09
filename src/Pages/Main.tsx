@@ -79,6 +79,21 @@ export default function Main(props: any) {
             getResult().then(() => {
                 setIsLoading(false);
             });
+        } else {
+            const checkRefreshToken = async () => {
+                const url = `${process.env.REACT_APP_API_BASE_URL}/refresh_token`;
+                const res = await axios.post(url, null, {
+                    withCredentials: true,
+                }).then((res) => {
+                    const data = res.data;
+                    const newUser = { accesstoken: data.accesstoken, id: data.id, email: data.email, username: data.username };
+                    setUser(newUser);
+                    if (!data.accesstoken) {
+                        navigate("/login")
+                    }
+                });
+            };
+            checkRefreshToken();
         }
     }, [user])
 
