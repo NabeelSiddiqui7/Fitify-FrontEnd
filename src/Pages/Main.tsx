@@ -75,9 +75,11 @@ export default function Main(props: any) {
     }, []);
 
     useEffect(() => {
-        getResult().then(() => {
-            setIsLoading(false);
-        });
+        if (user.id != -1) {
+            getResult().then(() => {
+                setIsLoading(false);
+            });
+        }
     }, [user])
 
     // if (isLoading) {
