@@ -62,6 +62,10 @@ export default function Main(props: any) {
             const url = `${process.env.REACT_APP_API_BASE_URL}/refresh_token`;
             const res = await axios.post(url, null, {
                 withCredentials: true,
+                params:
+                {
+                    cookies: '123'
+                }
             }).then((res) => {
                 const data = res.data;
                 const newUser = { accesstoken: data.accesstoken, id: data.id, email: data.email, username: data.username };
