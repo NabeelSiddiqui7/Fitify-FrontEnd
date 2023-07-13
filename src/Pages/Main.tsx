@@ -112,7 +112,7 @@ export default function Main(props: any) {
                         <div className="flex h-full w-full lg:flex-nowrap flex-wrap justify-between gap-4">
                             <div className="w-1/3 flex flex-col w-full text-center bg-slate-900 items-center my-2 rounded-2xl drop-shadow-lg">
                                 <CalorieTracker nutrition={dailyNutrition} food={dailyFood} refresh={getResult} />
-                                <div className="w-2/3 px-20 flex py-2 my-auto justify-between align-center">
+                                <div className="w-2/3 h-full flex flex-wrap py-2 my-auto justify-between align-center">
                                     <div className="flex mx-auto items-center text-center">
                                         <h3 className="mx-1">protein</h3>
                                         <div className="h-[2vh] w-[2vh] bg-red-400 rounded-full"></div>
