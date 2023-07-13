@@ -40,8 +40,8 @@ export default function WeeklySummary(props: any) {
 
     useEffect(() => {
         if (data.length > 0) {
-            setStepsAdded(new Date(data[data.length - 1].day).toString().slice(0, 15) == new Date().toString().slice(0, 15) && data[data.length - 1].steps != null);
-            setCaloriesAdded(new Date(data[data.length - 1].day).toString().slice(0, 15) == new Date().toString().slice(0, 15) && data[data.length - 1].calories != null);
+            setStepsAdded(new Date(data[data.length - 1].date).toString().slice(0, 15) == new Date().toString().slice(0, 15) && data[data.length - 1].steps != null);
+            setCaloriesAdded(new Date(data[data.length - 1].date).toString().slice(0, 15) == new Date().toString().slice(0, 15) && data[data.length - 1].calories != null);
         }
     })
     return (
@@ -65,7 +65,7 @@ export default function WeeklySummary(props: any) {
                         <ResponsiveContainer width="100%" height="100%">
                             <LineChart width={730} height={250} data={props.data}
                                 margin={{ top: 5, right: 30, left: 20, bottom: 5 }}>
-                                <XAxis dataKey="day" tick={{ fill: 'white' }} tickLine={{ stroke: 'white' }}
+                                <XAxis dataKey="date" tick={{ fill: 'white' }} tickLine={{ stroke: 'white' }}
                                     tickFormatter={formatXAxis} padding={{ left: 10, right: 10 }} />
                                 <YAxis tick={{ fill: 'white' }} tickLine={{ stroke: 'white' }} />
                                 <Tooltip />
@@ -205,7 +205,7 @@ export default function WeeklySummary(props: any) {
                         <ResponsiveContainer width="100%" height="80%">
                             <LineChart width={730} height={250} data={props.data}
                                 margin={{ top: 5, right: 30, left: 20, bottom: 5 }}>
-                                <XAxis dataKey="day" tickFormatter={formatXAxis} padding={{ left: 10, right: 10 }} />
+                                <XAxis dataKey="date" tickFormatter={formatXAxis} padding={{ left: 10, right: 10 }} />
                                 <YAxis />
                                 <Tooltip />
                                 <Legend />
