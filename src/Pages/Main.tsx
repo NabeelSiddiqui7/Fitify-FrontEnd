@@ -113,15 +113,15 @@ export default function Main(props: any) {
                             <div className="w-1/3 flex flex-col w-full text-center bg-slate-900 items-center my-2 rounded-2xl drop-shadow-lg">
                                 <CalorieTracker nutrition={dailyNutrition} food={dailyFood} refresh={getResult} />
                                 <div className="w-2/3 px-20 flex py-2 my-auto justify-between align-center">
-                                    <div className="flex items-center text-center">
+                                    <div className="flex mx-auto items-center text-center">
                                         <h3 className="mx-1">protein</h3>
                                         <div className="h-[2vh] w-[2vh] bg-red-400 rounded-full"></div>
                                     </div>
-                                    <div className="flex items-center">
+                                    <div className="flex mx-auto items-center">
                                         <h3 className="mx-1">carbs</h3>
                                         <div className="h-[2vh] w-[2vh] bg-orange-600 rounded-full"></div>
                                     </div>
-                                    <div className="flex items-center">
+                                    <div className="flex mx-auto items-center">
                                         <h3 className="mx-1">fat</h3>
                                         <div className="h-[2vh] w-[2vh] bg-yellow-400 rounded-full"></div>
                                     </div>
@@ -137,7 +137,7 @@ export default function Main(props: any) {
                             <div className="lg:w-3/5 w-full h-[52vh] flex flex-col text-center bg-slate-900 items-center my-2 rounded-2xl drop-shadow-lg">
                                 <WeightTracker data={weight} refresh={getResult} />
                             </div>
-                            <div className="flex grow flex-col text-center bg-slate-900 justify-between items-center my-2 rounded-2xl drop-shadow-lg">
+                            <div className="flex grow flex-col w-full text-center bg-slate-900 justify-between items-center my-2 rounded-2xl drop-shadow-lg">
                                 <MuscleGroups data={dailyWorkout} refresh={getResult} />
                             </div>
                         </div>
