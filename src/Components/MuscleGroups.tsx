@@ -53,6 +53,7 @@ export default function MuscleGroups(props: any) {
         await axios.get(url, {
             params:
             {
+                id: 1,
                 name: workout,
                 date: (new Date).toString()
             }
